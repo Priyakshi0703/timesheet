@@ -1,0 +1,112 @@
+<!-- Used to open the Modal -->
+
+<div class="container text-center">
+        <h2>Welcome Admin</h2>
+        
+        <p><button class="btn" data-toggle="modal" data-target="#myModal">Add User</button></p>
+        <p><button type="button" class="btn btn-primary" (click)="showCalendar()">Mark Attendance</button>
+            <button type="button" class="btn btn-primary" (click)="showAttendance()">Show Attendance</button>
+        </p>
+        <div *ngIf="flag==1">
+                <input [(ngModel)]="userAttendance.date" type="date" name="date">
+                <input (click)="getDate()" type="submit">
+        </div>
+      </div>
+
+      <div class="container text-right">
+            <button type="button" class="btn btn-primary" (click)="logout()">Logout</button>
+        </div>
+  
+
+
+<div *ngIf="tableFlag==1">
+        <div class="container">            
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Marked Attendance</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                  <div *ngFor='let adminAttendance of savedAdminAttendance'>
+                <tr>
+                  <td>{{adminAttendance.date}}</td>
+                </tr>
+                </div>
+              </tbody>
+            </table>
+          </div>
+          </div>
+        
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><span class="glyphicon glyphicon-user"></span> Signup</h4>
+            </div>
+            <div class="modal-body">
+                <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm.value)" novalidate>
+                    <div class="form-group">
+                        <label> Firstname </label>
+                        <input type="text" class="form-control" [(ngModel)]="userInput.firstname" #nameRef="ngModel" required placeholder="Enter Firstname" name="firstname" ngModel>
+                        <div *ngIf="nameRef.errors && (nameRef.dirty||nameRef.touched)">
+                            <div [hidden]="!nameRef.errors.required">
+                                Please enter Firstname
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label> Lastname </label>
+                        <input type="text" class="form-control" #lastRef="ngModel"  [(ngModel)]="userInput.lastname"required placeholder="Enter Lastname" name="lasttname" ngModel>
+                        <div *ngIf="lastRef.errors && (lastRef.dirty||lastRef.touched)">
+                            <div [hidden]="!lastRef.errors.required">
+                                Please enter Lastname
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label> Employee Id</label>
+                        <input type="number" class="form-control" #refEmployeeId="ngModel" [(ngModel)]="userInput.empId" pattern = "^[1-9][0-9]{3}$" required placeholder="Enter Employee Id"
+                            name="employeeId" ngModel>
+                        <div *ngIf="refEmployeeId.errors && (refEmployeeId.dirty||refEmployeeId.touched)">
+                            <div [hidden]="!refEmployeeId.errors.required">
+                                Please enter Employee Id
+                            </div>
+                            <div [hidden]="!refEmployeeId.errors.pattern">
+                                Please enter valid Employee Id
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label> Password</label>
+                        <input type="password" class="form-control" minlength="6" #refPassword="ngModel"  [(ngModel)]="userInput.password" required placeholder="Enter Password" name="password" ngModel>
+                        <div *ngIf="refPassword.errors && (refPassword.dirty||refPassword.touched)">
+                            <div [hidden]="!refPassword.errors.required">
+                                Please enter Password
+                            </div>
+                            <div [hidden]="!refPassword.errors.minlength">
+                                Enter atleast 6 characters
+                            </div>
+                        </div>
+                    </div>
+               
+                <button [disabled]="!userForm.form.valid" type="submit" (click)="signup()" class="btn btn-block">Add User
+                <span class="glyphicon glyphicon-ok"></span>
+              </button>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+              <span class="glyphicon glyphicon-remove"></span> Cancel
+            </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="container text-center">
+  <h3>Welcome User</h3>
+    <p><button type="button" class="btn btn-primary" (click)="showCalendar()">Mark Attendance</button>
+      <button type="button" class="btn btn-primary" (click)="showAttendance()">Show Attendance</button>
+  </p>
+  <div *ngIf="flag==1">
+          <input [(ngModel)]="userAttendance.date" type="date" name="date">
+          <input (click)="getDate()" type="submit">
+  </div>
+</div>
+<div class="container text-right">
+<button type="button" class="btn btn-primary" (click)="logout()">Logout</button>
+</div>
+<div *ngIf="tableFlag==1">
+<div class="container">            
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Marked Attendance</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+          <div *ngFor='let userAttendance of savedUserAttendance'>
+        <tr>
+          <td>{{userAttendance.date}}</td>
+        </tr>
+        </div>
+      </tbody>
+    </table>
+  </div>
+  </div>
