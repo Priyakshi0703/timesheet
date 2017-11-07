@@ -12,4 +12,6 @@ router.route('/user')
  .post(homeController.postAttendance);
  router.route('/attendance/:empId')
  .get(homeController.getAttendance);
+ 
+
 module.exports = router;
