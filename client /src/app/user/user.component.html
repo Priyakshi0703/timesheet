@@ -6,6 +6,9 @@
   <div *ngIf="flag==1">
           <input [(ngModel)]="userAttendance.date" type="date" name="date">
           <input (click)="getDate()" type="submit">
+          <div *ngIf="dateFlag==1">
+            This date is already marked
+        </div>
   </div>
 </div>
 <div class="container text-right">
@@ -16,16 +19,16 @@
     <table class="table table-bordered">
       <thead>
         <tr>
+          <th>Name</th>
           <th>Marked Attendance</th>
         </tr>
       </thead>
       
       <tbody>
-          <div *ngFor='let userAttendance of savedUserAttendance'>
-        <tr>
+        <tr *ngFor='let userAttendance of savedUserAttendance'>
+          <td>{{userAttendance.firstname}} {{userAttendance.lastname}} </td>
           <td>{{userAttendance.date}}</td>
         </tr>
-        </div>
       </tbody>
     </table>
   </div>

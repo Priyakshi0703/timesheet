@@ -9,7 +9,9 @@
       <label>Password </label>
       <input type="password" required class="form-control"  [(ngModel)]="userInput.password" name="password" ngModel>
     </div>
-
+    <div *ngIf="flag==2">
+     Invalid details 
+  </div>
     <button type="submit" class="btn btn-success" (click)="login()">Submit</button>
 
   </form>

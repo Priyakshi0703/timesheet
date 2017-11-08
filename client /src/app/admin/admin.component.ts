@@ -27,15 +27,17 @@ export class AdminComponent implements OnInit {
     localStorage.setItem("empId", "null");
     this.router.navigate(['/login']);
   }
+  empIdFlag = 0;
   signup() {
     console.log(this.userInput)
     this.connectService.postUser(this.userInput).subscribe(res => {
-      alert("User Added Successfully");
-      console.log(res);
-      console.log("coming");
-      console.log(typeof(res));
-    },
-    errorr => { alert("Error"); 
+      if (res.success == true) {
+        this.empIdFlag = 0;
+        alert("User Added Successfully");
+      }
+      else {
+        this.empIdFlag = 1;
+      }
     });
 
 
@@ -44,6 +46,7 @@ export class AdminComponent implements OnInit {
   }
   flag = 0
   showCalendar() {
+    this.dateFlag = 0;
     this.tableFlag = 0;
     if (this.flag == 0) {
       this.flag = 1;
@@ -56,12 +59,19 @@ export class AdminComponent implements OnInit {
     date: "",
     empId: ""
   }
+  dateFlag = 0;
+
   getDate() {
 
 
     this.userAttendance.empId = localStorage.getItem("empId");
     this.connectService.postAttendance(this.userAttendance).subscribe(res => {
-
+      if (res.success != true) {
+        this.dateFlag = 1;
+        //alert("Date already exists");
+      } else {
+        this.dateFlag = 0;
+      }
     });
 
 
@@ -78,6 +88,9 @@ export class AdminComponent implements OnInit {
     }
     this.connectService.showAttendance().subscribe(res => {
       this.savedAdminAttendance = res;
+      for (var i = 0; i < this.savedAdminAttendance.length; i++) {
+        this.savedAdminAttendance[i].date = this.savedAdminAttendance[i].date.split('T')[0];
+      }
     });
   }
 

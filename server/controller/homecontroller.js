@@ -14,7 +14,7 @@ exports.getUser = function (req, res) {
 
 
 exports.postUser = function (req, res) {
-    var user = new User({
+    var user = new Admin({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         empId: req.body.empId,
@@ -40,20 +40,41 @@ exports.postAttendance = function (req, res) {
         date: req.body.date
 
     });
-
-    attendance.save(function (err, response) {
+    Attendance.findOne({ empId: attendance.empId, date: attendance.date }, function (err, response) {
         if (err) {
-            console.log(err)
-            res.json(err);
+            res.json({
+                status: "false",
+                data: "server error"
+            })
+        }
+        else if (response == null) {
+            attendance.save(function (error, response1) {
+                if (error) {
+                    res.json({
+                        "success": false,
+                        "error": error
+                    })
+
+                }
+                else {
+                    res.json({
+                        "success": true,
+                        "body": response1
+                    })
+                }
+            });
+
         }
         else {
             res.json({
-                success: true,
-                body: response
+                success: false,
+                body: "Date Already exist"
             })
         }
-    })
+
+    });
 }
+
 
 exports.getAttendance = function (req, res) {
     var empId = req.params.empId;
@@ -68,76 +89,17 @@ exports.getAttendance = function (req, res) {
                                 let array = {};
                                 array.firstname = list.firstname;
                                 array.lastname = list.lastname;
-                                array.date=mark.date;
+                                array.date = mark.date;
                                 detailsarray.push(array);
                             }
-                        return mark;
-                        
+                            return mark;
+
                         });
-                    return list;
-                    
+                        return list;
+
                     });
-            return res.json(detailsarray);
-            
+                    return res.json(detailsarray);
+
                 })
         })
 }
-
-
-        // , function (err, response) {
-
-//         if (err) {
-//             return res.json(req, res, err);
-//         }
-
-//         res.json(response);
-//     })
-// }
-//Use of promise to get the data in an array
-// exports.getAlldetails = function (req, res) {
-//     var name = req.params.name;
-//     Users.find({ name: name }).exec()
-//         .then(function (user) {
-//             var detailsarray = [];
-//             return Student.find({}).exec()
-//                 .then(function (student) {
-
-//                     return Universitydetails.find({}).exec()
-//                         .then(function (universitydetails) {
-
-//                             var test1 = universitydetails.map(function (university) {
-//                                 //for (let university of universitydetails) { 
-//                                 var test2 = user.map(function (list) {
-//                                     //   for (let list of user) {
-//                                     var test3 = student.map(function (details) {
-//                                         // for (let details of student) {
-//                                         if (details.student_id == list.user_id) {
-//                                             if (details.university_id == university.university_id) {
-
-//                                                 let array = {};
-
-//                                                 array.name = list.name;
-//                                                 array.father_name = list.father_name;
-//                                                 array.email = list.email;
-//                                                 array.address = list.address;
-//                                                 array.phone_number = list.phone_number;
-//                                                 array.student_id = details.student_id;
-//                                                 array.stream = details.stream;
-//                                                 array.section = details.section;
-//                                                 array.universityName = university.university;
-//                                                 array.university_state = university.state;
-//                                                 detailsarray.push(array);
-//                                             }
-//                                         }
-//                                         return details;
-//                                     });
-//                                     return list;
-//                                 });
-//                                 return university;
-//                             });
-//                             return res.json(detailsarray);
-//                         })
-
-//                 })
-//         })
-// }
